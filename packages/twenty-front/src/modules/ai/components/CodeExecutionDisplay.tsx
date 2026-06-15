@@ -284,6 +284,7 @@ export const CodeExecutionDisplay = ({
               options={{
                 readOnly: true,
                 domReadOnly: true,
+                scrollBeyondLastLine: false,
                 minimap: { enabled: false },
               }}
             />

@@ -96,7 +96,9 @@ export const SignInUpWorkspaceCreationForm = () => {
       ? errorMessage
       : status === 'unavailable'
         ? t`This address is already taken`
-        : undefined;
+        : status === 'error'
+          ? t`Couldn't check availability. Please try again.`
+          : undefined;
 
   return (
     <StyledOnboardingContentContainer>

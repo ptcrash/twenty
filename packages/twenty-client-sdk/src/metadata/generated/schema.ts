@@ -1986,6 +1986,13 @@ export interface VerifyEmailAndGetLoginToken {
     __typename: 'VerifyEmailAndGetLoginToken'
 }
 
+export interface SubdomainAvailabilityDTO {
+    isValid: Scalars['Boolean']
+    available: Scalars['Boolean']
+    suggestedSubdomain: Scalars['String']
+    __typename: 'SubdomainAvailabilityDTO'
+}
+
 export interface ApiKeyToken {
     token: Scalars['String']
     __typename: 'ApiKeyToken'
@@ -2690,6 +2697,7 @@ export interface Query {
     checkUserExists: CheckUserExist
     checkWorkspaceInviteHashIsValid: WorkspaceInviteHashValid
     findWorkspaceFromInviteHash: Workspace
+    checkWorkspaceSubdomainAvailability: SubdomainAvailabilityDTO
     validatePasswordResetToken: ValidatePasswordResetToken
     findApplicationRegistrationByClientId?: PublicApplicationRegistration
     findApplicationRegistrationByUniversalIdentifier?: ApplicationRegistration
@@ -5050,6 +5058,14 @@ export interface VerifyEmailAndGetLoginTokenGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface SubdomainAvailabilityDTOGenqlSelection{
+    isValid?: boolean | number
+    available?: boolean | number
+    suggestedSubdomain?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
 export interface ApiKeyTokenGenqlSelection{
     token?: boolean | number
     __typename?: boolean | number
@@ -5808,6 +5824,7 @@ export interface QueryGenqlSelection{
     checkUserExists?: (CheckUserExistGenqlSelection & { __args: {email: Scalars['String'], captchaToken?: (Scalars['String'] | null)} })
     checkWorkspaceInviteHashIsValid?: (WorkspaceInviteHashValidGenqlSelection & { __args: {inviteHash: Scalars['String']} })
     findWorkspaceFromInviteHash?: (WorkspaceGenqlSelection & { __args: {inviteHash: Scalars['String']} })
+    checkWorkspaceSubdomainAvailability?: (SubdomainAvailabilityDTOGenqlSelection & { __args: {subdomain: Scalars['String']} })
     validatePasswordResetToken?: (ValidatePasswordResetTokenGenqlSelection & { __args: {passwordResetToken: Scalars['String']} })
     findApplicationRegistrationByClientId?: (PublicApplicationRegistrationGenqlSelection & { __args: {clientId: Scalars['String']} })
     findApplicationRegistrationByUniversalIdentifier?: (ApplicationRegistrationGenqlSelection & { __args: {universalIdentifier: Scalars['String']} })
@@ -6025,7 +6042,7 @@ export interface MutationGenqlSelection{
     getAuthTokensFromOTP?: (AuthTokensGenqlSelection & { __args: {otp: Scalars['String'], loginToken: Scalars['String'], captchaToken?: (Scalars['String'] | null), origin: Scalars['String']} })
     signUp?: (AvailableWorkspacesAndAccessTokensGenqlSelection & { __args: {email: Scalars['String'], password: Scalars['String'], captchaToken?: (Scalars['String'] | null), locale?: (Scalars['String'] | null), verifyEmailRedirectPath?: (Scalars['String'] | null)} })
     signUpInWorkspace?: (SignUpGenqlSelection & { __args: {email: Scalars['String'], password: Scalars['String'], workspaceId?: (Scalars['UUID'] | null), workspaceInviteHash?: (Scalars['String'] | null), workspacePersonalInviteToken?: (Scalars['String'] | null), captchaToken?: (Scalars['String'] | null), locale?: (Scalars['String'] | null), verifyEmailRedirectPath?: (Scalars['String'] | null)} })
-    signUpInNewWorkspace?: SignUpGenqlSelection
+    signUpInNewWorkspace?: (SignUpGenqlSelection & { __args?: {input?: (SignUpInNewWorkspaceInput | null)} })
     generateTransientToken?: TransientTokenGenqlSelection
     getAuthTokensFromLoginToken?: (AuthTokensGenqlSelection & { __args: {loginToken: Scalars['String'], origin: Scalars['String']} })
     authorizeApp?: (AuthorizeAppGenqlSelection & { __args: {clientId: Scalars['String'], codeChallenge?: (Scalars['String'] | null), redirectUrl: Scalars['String'], state?: (Scalars['String'] | null), scope?: (Scalars['String'] | null)} })
@@ -6422,6 +6439,8 @@ export interface CreateSkillInput {id?: (Scalars['UUID'] | null),name: Scalars['
 export interface UpdateSkillInput {id: Scalars['UUID'],name?: (Scalars['String'] | null),label?: (Scalars['String'] | null),icon?: (Scalars['String'] | null),description?: (Scalars['String'] | null),content?: (Scalars['String'] | null),isActive?: (Scalars['Boolean'] | null)}
 
 export interface GetAuthorizationUrlForSSOInput {identityProviderId: Scalars['UUID'],workspaceInviteHash?: (Scalars['String'] | null)}
+
+export interface SignUpInNewWorkspaceInput {displayName?: (Scalars['String'] | null),subdomain?: (Scalars['String'] | null)}
 
 export interface CreateApplicationRegistrationInput {name: Scalars['String'],universalIdentifier?: (Scalars['String'] | null),oAuthRedirectUris?: (Scalars['String'][] | null),oAuthScopes?: (Scalars['String'][] | null)}
 
@@ -7933,6 +7952,14 @@ export interface LogicFunctionLogsInput {applicationId?: (Scalars['UUID'] | null
     export const isVerifyEmailAndGetLoginToken = (obj?: { __typename?: any } | null): obj is VerifyEmailAndGetLoginToken => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isVerifyEmailAndGetLoginToken"')
       return VerifyEmailAndGetLoginToken_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const SubdomainAvailabilityDTO_possibleTypes: string[] = ['SubdomainAvailabilityDTO']
+    export const isSubdomainAvailabilityDTO = (obj?: { __typename?: any } | null): obj is SubdomainAvailabilityDTO => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSubdomainAvailabilityDTO"')
+      return SubdomainAvailabilityDTO_possibleTypes.includes(obj.__typename)
     }
     
 

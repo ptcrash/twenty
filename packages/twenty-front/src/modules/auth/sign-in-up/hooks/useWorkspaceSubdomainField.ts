@@ -13,7 +13,8 @@ export type SubdomainFieldStatus =
   | 'checking'
   | 'available'
   | 'unavailable'
-  | 'invalid';
+  | 'invalid'
+  | 'error';
 
 const AVAILABILITY_CHECK_DEBOUNCE_MS = 400;
 
@@ -122,7 +123,8 @@ export const useWorkspaceSubdomainField = ({
       })
       .catch(() => {
         if (!isCancelled) {
-          setStatus('idle');
+          setSuggestion(undefined);
+          setStatus('error');
         }
       });
 
@@ -184,7 +186,8 @@ export const useWorkspaceSubdomainField = ({
       })
       .catch(() => {
         if (!isCancelled) {
-          setStatus('idle');
+          setSuggestion(undefined);
+          setStatus('error');
         }
       });
 

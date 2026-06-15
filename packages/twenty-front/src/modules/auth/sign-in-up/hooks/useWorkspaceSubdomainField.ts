@@ -236,7 +236,7 @@ export const useWorkspaceSubdomainField = ({
 
     setIsManuallyEdited(true);
     setSubdomain(suggestion);
-    setStatus('available');
+    setStatus('checking');
     setErrorMessage(undefined);
     setSuggestion(undefined);
   };

@@ -87,4 +87,44 @@ describe('useWorkspaceSubdomainField', () => {
     expect(result.current.suggestion).toBe('taken-2');
     expect(result.current.isAvailable).toBe(false);
   });
+
+  it('re-validates an applied suggestion before enabling submission', async () => {
+    const { result } = renderHook(
+      () => useWorkspaceSubdomainField({ workspaceName: '' }),
+      {
+        wrapper: createWrapper([
+          availabilityMock('taken', {
+            isValid: true,
+            available: false,
+            suggestedSubdomain: 'taken-2',
+          }),
+          availabilityMock('taken-2', {
+            isValid: true,
+            available: true,
+            suggestedSubdomain: 'taken-2',
+          }),
+        ]),
+      },
+    );
+
+    act(() => {
+      result.current.handleSubdomainChange('taken');
+    });
+
+    await waitFor(() => expect(result.current.suggestion).toBe('taken-2'), {
+      timeout: 3000,
+    });
+
+    act(() => {
+      result.current.applySuggestion();
+    });
+
+    // Continue stays disabled until the suggestion is re-confirmed available.
+    expect(result.current.isAvailable).toBe(false);
+
+    await waitFor(() => expect(result.current.status).toBe('available'), {
+      timeout: 3000,
+    });
+    expect(result.current.subdomain).toBe('taken-2');
+  });
 });

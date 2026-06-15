@@ -106,6 +106,13 @@ WORKDIR /app/packages/twenty-server
 ARG APP_VERSION
 ENV APP_VERSION=$APP_VERSION
 
+# Run React (react-email SSR) in production mode. Without this NODE_ENV is unset,
+# so React loads its development builds; React 19's dev JSX runtime calls
+# dispatcher.getOwner(), which throws at runtime and blanks rendered emails
+# (the body ships as an errored <Suspense> boundary). Inherited by the
+# twenty-server-aws and twenty stages; the dev image sets its own NODE_ENV.
+ENV NODE_ENV=production
+
 # Workspace root config
 COPY --chown=1000 --from=twenty-server-build /app/package.json /app/yarn.lock /app/.yarnrc.yml /app/
 COPY --chown=1000 --from=twenty-server-build /app/tsconfig.base.json /app/nx.json /app/
